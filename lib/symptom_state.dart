@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:symptom_tracker/symptom_record.dart';
 
 class SymptomState {
-  // final List<String> symptoms = ['Headache', 'Fever', 'Cough', 'Fatigue', 'Nausea'];
   final List<SymptomRecord> _symptomRecords = [];
 
   List<SymptomRecord> get symptomRecords => List.unmodifiable(_symptomRecords);
@@ -24,8 +23,8 @@ class SymptomState {
     await prefs.setString('symptomRecords', recordsJson);
   }
 
-  void addSymptomRecord(SymptomRecord record) {
-    _symptomRecords.add(record);
+  void addSymptomRecord() {
+    _symptomRecords.add(SymptomRecord(symptom: "Nausea", timestamp: DateTime.now()));
     _saveSymptomRecords();
   }
 }

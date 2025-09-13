@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:symptom_tracker/main.dart';
-import 'package:symptom_tracker/symptom_record.dart';
 import 'package:symptom_tracker/symptom_stats_widget.dart';
 import 'package:symptom_tracker/symptom_graphs_widget.dart';
 
@@ -20,28 +19,9 @@ class _MyHomePageState extends State<MyHomePage> {
     symptomState.loadSymptomRecords().then((_) => setState(() {}));
   }
 
-  void _showSymptomDialog() async {
-    String? selectedSymptom = await showDialog<String>(
-      context: context,
-      builder: (BuildContext context) {
-        return SimpleDialog(
-          title: const Text('Select a symptom'),
-          children: symptomState.symptoms.map((symptom) {
-            return SimpleDialogOption(
-              onPressed: () {
-                Navigator.pop(context, symptom);
-              },
-              child: Text(symptom),
-            );
-          }).toList(),
-        );
-      },
-    );
-
-    if (selectedSymptom != null) {
-      symptomState.addSymptomRecord(SymptomRecord(symptom: selectedSymptom, timestamp: DateTime.now()));
-      setState(() {});
-    }
+  void _addPressed() async {
+    symptomState.addSymptomRecord();
+    setState(() {});
   }
 
   @override
@@ -60,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: _showSymptomDialog, tooltip: 'Add Symptom', child: const Icon(Icons.add)),
+      floatingActionButton: FloatingActionButton(onPressed: _addPressed, tooltip: 'Add Symptom', child: const Icon(Icons.add)),
     );
   }
 }
