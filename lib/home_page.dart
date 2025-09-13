@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:symptom_tracker/main.dart';
 import 'package:symptom_tracker/symptom_record.dart';
 import 'package:symptom_tracker/symptom_stats_widget.dart';
+import 'package:symptom_tracker/symptom_graphs_widget.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -54,6 +55,8 @@ class _MyHomePageState extends State<MyHomePage> {
             const Text('Symptom Counts:', style: TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 16),
             SymptomStatsWidget(symptomState: symptomState),
+            const SizedBox(height: 16),
+            SymptomGraphsWidget(symptomState: symptomState, symptom: 'Nausea'),
           ],
         ),
       ),
