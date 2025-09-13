@@ -34,6 +34,72 @@ class _RecordsViewPageState extends State<RecordsViewPage> {
     }
   }
 
+  Future<void> _addRecord() async {
+    DateTime selectedDate = DateTime.now();
+    TimeOfDay selectedTime = TimeOfDay.fromDateTime(DateTime.now());
+
+    final result = await showDialog<Map<String, dynamic>>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setStateDialog) {
+            return AlertDialog(
+              title: const Text('Add New Record'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text('Adding Nausea record', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 16),
+                  ListTile(
+                    title: const Text('Date'),
+                    subtitle: Text('${selectedDate.month}/${selectedDate.day}/${selectedDate.year}'),
+                    trailing: const Icon(Icons.calendar_today),
+                    onTap: () async {
+                      final date = await showDatePicker(context: context, initialDate: selectedDate, firstDate: DateTime(2020), lastDate: DateTime.now());
+                      if (date != null) {
+                        setStateDialog(() {
+                          selectedDate = date;
+                        });
+                      }
+                    },
+                  ),
+                  ListTile(
+                    title: const Text('Time'),
+                    subtitle: Text('${selectedTime.hour.toString().padLeft(2, '0')}:${selectedTime.minute.toString().padLeft(2, '0')}'),
+                    trailing: const Icon(Icons.access_time),
+                    onTap: () async {
+                      final time = await showTimePicker(context: context, initialTime: selectedTime);
+                      if (time != null) {
+                        setStateDialog(() {
+                          selectedTime = time;
+                        });
+                      }
+                    },
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+                TextButton(
+                  onPressed: () {
+                    final dateTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedTime.hour, selectedTime.minute);
+                    Navigator.of(context).pop({'symptom': 'Nausea', 'dateTime': dateTime});
+                  },
+                  child: const Text('Add'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+
+    if (result != null) {
+      symptomState.addSymptomRecordWithDateTime(result['symptom'], result['dateTime']);
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final records = symptomState.symptomRecords;
@@ -60,6 +126,7 @@ class _RecordsViewPageState extends State<RecordsViewPage> {
                 );
               },
             ),
+      floatingActionButton: FloatingActionButton(onPressed: _addRecord, tooltip: 'Add Record', child: const Icon(Icons.add)),
     );
   }
 }

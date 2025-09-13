@@ -28,6 +28,11 @@ class SymptomState {
     _saveSymptomRecords();
   }
 
+  void addSymptomRecordWithDateTime(String symptom, DateTime timestamp) {
+    _symptomRecords.add(SymptomRecord(symptom: symptom, timestamp: timestamp));
+    _saveSymptomRecords();
+  }
+
   void deleteSymptomRecord(int index) {
     if (index >= 0 && index < _symptomRecords.length) {
       _symptomRecords.removeAt(index);
