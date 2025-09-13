@@ -100,6 +100,73 @@ class _RecordsViewPageState extends State<RecordsViewPage> {
     }
   }
 
+  Future<void> _editRecord(int index) async {
+    final record = symptomState.symptomRecords[index];
+    DateTime selectedDate = DateTime(record.timestamp.year, record.timestamp.month, record.timestamp.day);
+    TimeOfDay selectedTime = TimeOfDay.fromDateTime(record.timestamp);
+
+    final result = await showDialog<Map<String, dynamic>>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setStateDialog) {
+            return AlertDialog(
+              title: const Text('Edit Record'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text('Editing Nausea record', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 16),
+                  ListTile(
+                    title: const Text('Date'),
+                    subtitle: Text('${selectedDate.month}/${selectedDate.day}/${selectedDate.year}'),
+                    trailing: const Icon(Icons.calendar_today),
+                    onTap: () async {
+                      final date = await showDatePicker(context: context, initialDate: selectedDate, firstDate: DateTime(2020), lastDate: DateTime.now());
+                      if (date != null) {
+                        setStateDialog(() {
+                          selectedDate = date;
+                        });
+                      }
+                    },
+                  ),
+                  ListTile(
+                    title: const Text('Time'),
+                    subtitle: Text('${selectedTime.hour.toString().padLeft(2, '0')}:${selectedTime.minute.toString().padLeft(2, '0')}'),
+                    trailing: const Icon(Icons.access_time),
+                    onTap: () async {
+                      final time = await showTimePicker(context: context, initialTime: selectedTime);
+                      if (time != null) {
+                        setStateDialog(() {
+                          selectedTime = time;
+                        });
+                      }
+                    },
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+                TextButton(
+                  onPressed: () {
+                    final dateTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedTime.hour, selectedTime.minute);
+                    Navigator.of(context).pop({'symptom': 'Nausea', 'dateTime': dateTime});
+                  },
+                  child: const Text('Save'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+
+    if (result != null) {
+      symptomState.editSymptomRecord(index, result['symptom'], result['dateTime']);
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final records = symptomState.symptomRecords;
@@ -118,9 +185,20 @@ class _RecordsViewPageState extends State<RecordsViewPage> {
                     leading: const Icon(Icons.medical_services, color: Colors.red),
                     title: Text(record.symptom, style: const TextStyle(fontWeight: FontWeight.bold)),
                     subtitle: Text(_formatDateTime(record.timestamp)),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () => _deleteRecord(index),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.edit, color: Colors.blue),
+                          onPressed: () => _editRecord(index),
+                          tooltip: '',
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                          onPressed: () => _deleteRecord(index),
+                          tooltip: '',
+                        ),
+                      ],
                     ),
                   ),
                 );

@@ -39,4 +39,11 @@ class SymptomState {
       _saveSymptomRecords();
     }
   }
+
+  void editSymptomRecord(int index, String symptom, DateTime timestamp) {
+    if (index >= 0 && index < _symptomRecords.length) {
+      _symptomRecords[index] = SymptomRecord(symptom: symptom, timestamp: timestamp);
+      _saveSymptomRecords();
+    }
+  }
 }
