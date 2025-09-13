@@ -53,7 +53,7 @@ class SymptomGraphsWidget extends StatelessWidget {
                     barWidth: 2,
                     color: Theme.of(context).colorScheme.primary,
                     dotData: const FlDotData(show: true),
-                    belowBarData: BarAreaData(show: true, color: Theme.of(context).colorScheme.primary.withOpacity(0.1)),
+                    belowBarData: BarAreaData(show: true, color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)),
                   ),
                 ],
                 titlesData: FlTitlesData(
@@ -77,7 +77,7 @@ class SymptomGraphsWidget extends StatelessWidget {
                   topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                 ),
                 gridData: const FlGridData(show: true),
-                borderData: FlBorderData(show: true, border: Border.all(color: Colors.grey.withOpacity(0.3))),
+                borderData: FlBorderData(show: true, border: Border.all(color: Colors.grey..withValues(alpha: 0.3))),
               ),
             ),
           ),
