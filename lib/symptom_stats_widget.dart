@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:symptom_tracker/main.dart';
+import 'package:symptom_tracker/symptom_state.dart';
 
 class SymptomStatsWidget extends StatelessWidget {
   const SymptomStatsWidget({super.key, required this.symptomState});
