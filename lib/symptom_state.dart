@@ -27,4 +27,11 @@ class SymptomState {
     _symptomRecords.add(SymptomRecord(symptom: "Nausea", timestamp: DateTime.now()));
     _saveSymptomRecords();
   }
+
+  void deleteSymptomRecord(int index) {
+    if (index >= 0 && index < _symptomRecords.length) {
+      _symptomRecords.removeAt(index);
+      _saveSymptomRecords();
+    }
+  }
 }
