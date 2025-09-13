@@ -46,6 +46,7 @@ class SymptomGraphsWidget extends StatelessWidget {
                 maxX: 6,
                 minY: 0,
                 maxY: spots.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 1,
+                lineTouchData: const LineTouchData(enabled: false), // Disable touch interactions and tooltips
                 lineBarsData: [
                   LineChartBarData(
                     spots: spots,
