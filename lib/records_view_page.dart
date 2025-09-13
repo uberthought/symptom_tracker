@@ -172,7 +172,11 @@ class _RecordsViewPageState extends State<RecordsViewPage> {
     final records = symptomState.symptomRecords;
 
     return Scaffold(
-      appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.inversePrimary, title: const Text('Symptom Records')),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: const Text('Symptom Records'),
+        actions: [IconButton(icon: const Icon(Icons.add), onPressed: _addRecord, tooltip: 'Add Record')],
+      ),
       body: records.isEmpty
           ? const Center(child: Text('No symptom records found.', style: TextStyle(fontSize: 16)))
           : ListView.builder(
@@ -204,7 +208,6 @@ class _RecordsViewPageState extends State<RecordsViewPage> {
                 );
               },
             ),
-      floatingActionButton: FloatingActionButton(onPressed: _addRecord, tooltip: 'Add Record', child: const Icon(Icons.add)),
     );
   }
 }

@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
       title: 'Symptom Tracker',
       theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
       home: const MyHomePage(title: 'Symptom Tracker'),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
